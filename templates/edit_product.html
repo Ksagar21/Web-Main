@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Edit Product</title>
+</head>
+<body>
+  <h1>Edit Product</h1>
+  {% if product %}
+    <form method="POST" enctype="multipart/form-data">
+      <label for="product_category">Category:</label>
+      <select id="product_category" name="product_category">
+        <option value="camera" {% if product.category == "camera" %}selected{% endif %}>Camera</option>
+        <option value="lenses" {% if product.category == "lenses" %}selected{% endif %}>Lenses</option>
+        <option value="accessories" {% if product.category == "accessories" %}selected{% endif %}>Accessories</option>
+      </select><br><br>
+
+      <label for="product_brand">Brand:</label>
+      <input type="text" id="product_brand" name="product_brand" value="{{ product.brand }}"><br><br>
+
+      <label for="product_model">Model:</label>
+      <input type="text" id="product_model" name="product_model" value="{{ product.model }}"><br><br>
+
+      <label for="product_price">Price:</label>
+      <input type="number" id="product_price" name="product_price" value="{{ product.price }}"><br><br>
+
+      {% if product.image_url %}
+        <p>Current Image:</p>
+        <img src="{{ product.image_url }}" alt="Product Image" style="max-width: 200px;">
+      {% endif %}
+
+      <label for="product_image">Update Image (optional):</label>
+      <input type="file" id="product_image" name="product_image"><br><br>
+
+      <button type="submit">Update Product</button>
+    </form>
+  {% else %}
+    <p>Product not found!</p>
+  {% endif %}
+</body>
+</html>

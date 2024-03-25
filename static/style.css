@@ -1,0 +1,74 @@
+/* General styling */
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .jumbotron {
+    background-color: #f5f5f5;
+    text-align: center;
+    padding: 30px 0;
+    margin-bottom: 20px;
+  }
+  
+  .h1,
+  .lead {
+    color: #333;
+  }
+  
+  /* Carousel styling (optional) */
+  .carousel {
+    width: 600px; /* Adjust width as needed */
+    margin: 0 auto; /* Center the carousel horizontally */
+  }
+  
+  .carousel-inner {
+    display: flex;
+    animation: slideShow 4s infinite ease-in-out; /* Animation for automatic slide change */
+  }
+  
+  @keyframes slideShow {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%); /* Slide images to the left */
+    }
+  }
+  
+  .slide {
+    width: 100%; /* Images take full width of the carousel */
+    transition: transform 0.6s ease-in-out; /* Smooth transition between slides */
+  }
+  
+  .active {
+    opacity: 1; /* Make active slide fully visible */
+  }
+  
+  .slide:not(.active) {
+    opacity: 0; /* Hide inactive slides */
+  }
+  
+  .prev-btn,
+  .next-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%); /* Center buttons vertically */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+    color: white;
+    font-size: 24px;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    user-select: none; /* Prevent text selection on buttons */
+  }
+  
+  .prev-btn {
+    left: 10px; /* Position left button */
+  }
+  
+  .next-btn {
+    right: 10px; /* Position right button */
+  }
+  

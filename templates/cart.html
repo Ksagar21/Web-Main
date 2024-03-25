@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Your Cart</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <style>
+    /* Optional: Additional styling for the navbar (you can remove this) */
+    body {
+      background: #ecf0f3;
+    }
+
+    .navbar {
+      background-color: #212529;
+    }
+
+    .navbar-brand,
+    .nav-link {
+      color: white;
+    }
+
+    /* Optional: Additional styling for the cart and payment section */
+    .cart-items {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .cart-item-image {
+      width: 100px;
+      height: auto;
+      margin-right: 1rem;
+    }
+
+    .cart-item-details {
+      flex: 1; /* Allow details to expand */
+    }
+
+    .cart-item-brand,
+    .cart-item-name,
+    .cart-item-price {
+      margin: 0;
+      padding: 0.2rem 0;
+    }
+
+    .cart-item-remove-form {
+      display: inline-flex;
+      margin-left: auto;
+    }
+
+    .payment-form {
+      display: none; /* Hide the payment form by default */
+    }
+
+    #payment-confirmation {
+      margin-top: 1rem;
+      padding: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    #payment-details-form {
+      margin-top: 1rem;
+    }
+
+
+    /* Styling for the pop-up form */
+.form-popup {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.form-container {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* Additional styling for form elements */
+.form-container input[type=text] {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0 10px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.form-container button {
+  background-color: #526D82;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.form-container button:hover {
+  opacity: 0.8;
+}
+
+.cancel {
+  background-color: #f44336;
+}
+
+.cancel:hover {
+  opacity: 0.8;
+}
+
+.open-button {
+  background-color: #585f581a;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.open-button:hover {
+  background-color: #3e694e46;
+}
+
+
+
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">CapTure</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">Home</a>
+          </li>
+          </ul>
+      </div>
+    </div>
+  </nav>
+  <h1>Your Cart</h1>
+
+  {% if cart_items %}
+    <ul class="cart-items">
+      {% for product_id, item in cart_items.items() %}
+        <li class="cart-item">
+          <img src="{{ item.image_url }}" alt="{{ item.name }} Image" class="cart-item-image">
+          <div class="cart-item-details">
+            <p class="cart-item-brand">{{ item.brand }}</p>
+            <p class="cart-item-name">{{ item.name }}</p>
+            <p class="cart-item-price">{{ item.price }}</p>
+          </div>
+          <div class="cart-item-remove-form">
+            <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  
+    <div id="payment-confirmation">
+      {% if payment_confirmation %}
+        <p>{{ payment_confirmation }}</p>
+        {% if payment_confirmation.startswith("Payment successful") %}
+          <p>**Receipt:**</p>
+          <ul>
+            {% for product_id, item in cart_items.items() %}
+              <li>
+                {{ item.name }} - {{ item.price }}
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endif %}
+    </div>
+  
+    <!--<button id="open-payment-form" class="open-button">Make a Payment</button> -->
+
+<!-- The payment details form as a pop-up -->
+<div id="payment-details-form" class="form-popup">
+  <form action="/checkout" method="post" class="form-container">
+    <h1>Make a Payment</h1>
+    <label for="card_number"><b>Card Number</b></label>
+    <input type="text" name="card_number" placeholder="Card Number" required>
+    <label for="expiry_date"><b>Expiry Date</b></label>
+    <input type="text" name="expiry_date" placeholder="MM/YY" required>
+    <label for="cvv"><b>CVV</b></label>
+    <input type="text" name="cvv" placeholder="CVV" required>
+    <label for="name_on_card"><b>Name on Card</b></label>
+    <input type="text" name="name_on_card" placeholder="Name on Card" required>
+    <button type="submit" class="btn">Submit Payment</button>
+    <!--<button type="button" class="btn" onclick="closeForm()">Close</button> -->
+  </form>
+</div>
+    <button type="button" id="confirm-payment-btn" class="btn btn-success">Make Payment</button>
+  {% else %}
+    <p>Your cart is currently empty.</p>
+  {% endif %}
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const confirmPaymentBtn = document.getElementById('confirm-payment-btn');
+      const paymentDetailsForm = document.getElementById('payment-details-form');
+  
+      confirmPaymentBtn.addEventListener('click', function() {
+        // Show the payment details form
+        paymentDetailsForm.style.display = 'block';
+      });
+    });
+  </script>
+</body>
+</html>
