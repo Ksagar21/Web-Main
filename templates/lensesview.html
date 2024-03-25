@@ -41,7 +41,7 @@
                 <img src="{{ product.image_url }}" alt="Product Image" class="img-fluid">  </div>
               <div class="card-body d-flex flex-column justify-content-center align-items-center">
                   <h5 class="card-title text-center">{{ product.brand }} {{ product.model }}</h5> 
-                  <p class="card-text text-center">Price: {{ product.price }}</p> 
+                  <p class="card-text text-center">Price: € {{ product.price }}</p> 
                    <form action="/cart" method="post">
                   <input type="hidden" name="product_id" value="{{ product_id }}">
                   <button type="submit" class="btn btn-primary">Add to Cart</button>

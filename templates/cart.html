@@ -166,7 +166,7 @@
           <div class="cart-item-details">
             <p class="cart-item-brand">{{ item.brand }}</p>
             <p class="cart-item-name">{{ item.name }}</p>
-            <p class="cart-item-price">{{ item.price }}</p>
+            <p class="cart-item-price"> € {{ item.price }}</p>
           </div>
           <form action="/cart/remove/{{ product_id }}" method="post" class="cart-item-remove-form">
             <button type="submit" class="btn btn-danger btn-sm">Remove</button>
@@ -183,7 +183,7 @@
           <ul>
             {% for product_id, item in cart_items.items() %}
               <li>
-                {{ item.name }} - {{ item.price }}
+                {{ item.name }} - € {{ item.price }}
               </li>
             {% endfor %}
           </ul>
