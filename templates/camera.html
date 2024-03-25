@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>products</title>
+    <style>
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .product-card {
+            max-width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+        }
+        .product-card img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <h2>products</h2>
+    <div class="product-container">
+        {% if products %}
+            {% for product_id, product_details in products.items() %}
+            <div class="product-card">
+                <h3>{{ product_details.brand }}</h3>
+                <p>Model: {{ product_details.model }}</p>
+                <p>Price: {{ product_details.price }}</p>
+                <img src="{{ product_details.image_url }}" alt="product Image">
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No products available</p>
+        {% endif %}
+    </div>
+</body>
+</html>

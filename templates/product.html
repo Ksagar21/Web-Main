@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Capture-Administration Panel</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <style>
+        body {
+            background: #ecf0f3;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">CapTure</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button" class="btn btn-primary" onclick="openCameraModal()">Add Product</button>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/logout">Logout</a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="searchInput" onkeyup="searchEntries()">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="searchEntries()">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <!-- Navbar End -->
+
+    <!-- Add Product Modal -->
+    <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addProductModalLabel">Add Product</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Add Product Form -->
+                    <form method="POST" enctype="multipart/form-data">
+                        <label for="product_category">Category:</label>
+                        <select id="product_category" name="product_category">
+                            <option value="camera">Camera</option>
+                            <option value="lens">Lens</option>
+                            <option value="accessory">Accessories</option>
+                        </select><br><br>
+                        <label for="product_brand">Brand:</label>
+                        <input type="text" id="product_brand" name="product_brand"><br><br>
+                        <label for="product_model">Model:</label>
+                        <input type="text" id="product_model" name="product_model"><br><br>
+                        <label for="product_price">Price:</label>
+                        <input type="text" id="product_price" name="product_price"><br><br>
+                        <label for="product_image">Image:</label>
+                        <input type="file" id="product_image" name="product_image"><br><br>
+                        <input type="submit" value="Add Product" class="btn btn-primary">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add Product Modal End -->
+
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function openCameraModal() {
+            $('#addProductModal').modal('show');
+        }
+    </script>
+    
+    <h2>All Products</h2>
+    {% if products %}
+        {% for product_id, product in products.items() %}
+        <div>
+            <h3>Brand:{{ product.brand }}</h3> 
+            <p>Model: {{ product.model }}</p>
+             <p>Price: {{ product.price }}</p>
+            <img src="{{ product.image_url }}" alt="Product Image" style="max-width: 200px;">
+            <form action="/remove_product" method="post"> <input type="hidden" name="product_id" value="{{ product_id }}">
+                <button type="submit">Remove</button>
+            </form>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No products available</p>
+    {% endif %}
+    
+    
+</body>
+</html>
