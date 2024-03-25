@@ -2,6 +2,8 @@
 from flask import Flask, render_template, request, redirect, flash, session, url_for
 from datetime import datetime
 import pyrebase
+import os
+import random 
 
 
 
@@ -23,8 +25,11 @@ db = firebase.database()
 
 app = Flask(__name__)
 app.secret_key = '123456'  
-app.config['STATIC_URL'] = '/static'
-app.config['STATIC_FOLDER'] = 'static/images'
+
+storage = firebase.storage()
+
+
+
 
 ADMIN_USERNAME = 'admin'
 ADMIN_PASSWORD = 'admin123'
@@ -32,6 +37,17 @@ ADMIN_PASSWORD = 'admin123'
 
 
 #Main Routes 
+
+
+def load_images():
+    images_path = os.path.join(app.static_folder, "images")
+    images = [
+        os.path.join(images_path, filename)
+        for filename in os.listdir(images_path)
+        if filename.endswith(".jpg") or filename.endswith(".png")
+    ]
+    return images
+
 
 @app.route('/')
 def index():
@@ -311,6 +327,107 @@ def confirmation():
     else:
         # Redirect to a failure page or handle payment failure
         return "Payment failed. Please try again."
+    
+
+
+
+
+
+
+
+
+
+# User registration route
+@app.route("/register", methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        user_data = {
+            'email': email,
+            'password': password,
+        }
+        db.child('users').push(user_data)
+        return redirect(url_for('login'))  # Redirect to login after registration
+    return render_template('register.html')  # Render the registration form
+
+# User login route
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        users = db.child('users').get().val()
+        if users:
+            for user_id, user_data in users.items():
+                if user_data['email'] == email and user_data['password'] == password:
+                    session['user_id'] = user_id
+                    session['logged_in'] = True
+                    return redirect(url_for('user_dashboard'))
+        return render_template('login.html', message='Invalid credentials')
+    return render_template('login.html', message='')
+
+# User dashboard route
+@app.route("/dashboard")
+def user_dashboard():
+    if 'logged_in' in session and session['logged_in']:
+        user_id = session['user_id']
+        user_data = db.child('users').child(user_id).get().val()
+        return render_template('dashboard.html', user=user_data)
+    else:
+        return redirect(url_for('login'))  # Redirect to login if not logged in
+
+
+
+
+@app.route("/search", methods=["GET"])
+def search():
+    search_query = request.args.get("searchInput")
+    search_results = {}
+    
+    # Query the database for matching books based on search query
+    if search_query:
+        books_data = db.child("books").get().val() or {}
+        for key, book in books_data.items():
+            if search_query.lower() in book.get('title', '').lower() or search_query.lower() in book.get('author', '').lower():
+                search_results[key] = book
+    
+    return render_template('search_results.html', search_results=search_results, search_query=search_query)
+
+
+
+
+
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        message = request.form['message']
+
+        # Validate user input (optional)
+
+        # Create a dictionary to store contact information
+        contact_data = {
+            'name': name,
+            'email': email,
+            'message': message,
+            'timestamp': datetime.now().strftime("%d/%m/%Y %H:%M:%S")  # Capture timestamp
+        }
+
+        # Push contact data to Firebase Realtime Database
+        try:
+            db.child('contacts').push(contact_data)
+            flash('Your message has been sent successfully!', 'success')
+        except Exception as e:
+            # Handle database push error (e.g., display error message)
+            flash('Error saving your message. Please try again later.', 'danger')
+
+        return render_template('contact.html')
+
+    return render_template('contact.html')
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

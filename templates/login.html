@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capture - User Login</title>
+  <style>
+    /* Styles for registration form */
+    form {
+      display: flex;
+      flex-direction: column;
+      width: 300px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    label {
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      margin-bottom: 15px;
+    }
+
+    input[type="submit"] {
+      background-color: #20526e;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /* Styles for popup window */
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .popup-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">CapTure</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">Home</a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link active" href="/cart">Cart</a>
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+  </nav>
+              
+              
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+
+      <center> <h1>User Login</h1></center>
+      <br><br>
+    <form id="loginForm" action="/login" method="POST" onsubmit="return validateForm()">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+        <input type="submit" value="Login">
+    </form>
+
+    <!-- Login Error Popup -->
+    <div id="loginError" style="display: none;">
+        <p class="error-message">Error: Invalid credentials. Please check your email and password.</p>
+    </div>
+
+    <!-- Unregistered User Popup -->
+    <div id="unregisteredUser" style="display: none;">
+        <p class="error-message">Error: You are not registered. Please register first.</p>
+    </div>
+
+    <script>
+        function validateForm() {
+            // Add your custom validation logic here
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+
+            if (email.trim() === '' || password.trim() === '') {
+                document.getElementById("loginError").style.display = "block";
+                return false;
+            }
+            return true;
+        }
+
+        // Check for login errors or unregistered users on page load
+        window.onload = function () {
+            var queryString = window.location.search;
+            if (queryString.includes('error=invalid_credentials')) {
+                document.getElementById("loginError").style.display = "block";
+            } else if (queryString.includes('error=unregistered_user')) {
+                document.getElementById("unregisteredUser").style.display = "block";
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Registration</title>
+  <style>
+    /* Styles for registration form */
+    form {
+      display: flex;
+      flex-direction: column;
+      width: 300px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    label {
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      margin-bottom: 15px;
+    }
+
+    input[type="submit"] {
+      background-color: #20526e;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /* Styles for popup window */
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .popup-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">CapTure</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">Home</a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link active" href="/cart">Cart</a>
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+  </nav>
+              
+              
+            </ul>
+          </div>
+        </div>
+      </nav>
+  <center><h1>User Registration</h1></center>
+
+  <br><br>
+
+  <form id="registrationForm" action="/register" method="POST" onsubmit="return validateForm()">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required><br>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required><br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required><br>
+    <input type="submit" value="Register">
+  </form>
+
+  <div id="popup" class="popup">
+    <div class="popup-content">
+      <p>Registration successful! You can now log in.</p>
+      <button id="closePopup">Close</button>
+    </div>
+  </div>
+
+  <script>
+    function validateForm() {
+      // Add your form validation logic here
+      // Example: Username length at least 4, Email format validation, Password minimum length
+      const username = document.getElementById('username').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      if (username.length < 4) {
+        alert('Username must be at least 4 characters long.');
+        return false;
+      }
+
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert('Please enter a valid email address.');
+        return false;
+      }
+
+      if (password.length < 6) {
+        alert('Password must be at least 6 characters long.');
+        return false;
+      }
+
+      // Successful validation (replace with your actual logic to handle form submission)
+      document.getElementById('popup').style.display = 'block';
+      return false; // Prevent form submission (handled by popup display)
+    }
+
+    // Close button functionality (optional)
+    const closeButton = document.getElementById('closePopup');
+    if (closeButton) {
+      closeButton.addEventListener('click', () => {
+        document.getElementById('popup').style.display = 'none';
+      });
+    }
+  </script>
+</body>
+</html>

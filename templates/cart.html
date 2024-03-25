@@ -168,9 +168,9 @@
             <p class="cart-item-name">{{ item.name }}</p>
             <p class="cart-item-price">{{ item.price }}</p>
           </div>
-          <div class="cart-item-remove-form">
+          <form action="/cart/remove/{{ product_id }}" method="post" class="cart-item-remove-form">
             <button type="submit" class="btn btn-danger btn-sm">Remove</button>
-          </div>
+          </form>
         </li>
       {% endfor %}
     </ul>

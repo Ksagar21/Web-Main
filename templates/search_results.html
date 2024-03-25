@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Results</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">  </head>
+<body>
+  <header>
+    <h1>Search Results</h1>
+  </header>
+  <main>
+    {% if search_results %}
+      <p>Results for "{{ search_query }}":</p>
+      <ul>
+        {% for key, book in search_results.items() %}
+          <li>
+            <h3>{{ book.title }}</h3>
+            <p>By {{ book.author }}</p>
+            </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No results found for "{{ search_query }}".</p>
+    {% endif %}
+  </main>
+</body>
+</html>
