@@ -216,7 +216,7 @@ def lensesview():
     products = db.child("products").get().val()
 
     # Filter products for the "lens" category (assuming your category is "lens")
-    lenses = {product_id: product for product_id, product in products.items() if product.get('category') == "lens"}
+    lenses = {product_id: product for product_id, product in products.items() if product.get('category') == "lenses"}
 
     return render_template('lensesview.html', products=lenses)  # Pass filtered lenses
 
