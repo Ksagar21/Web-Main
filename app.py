@@ -336,7 +336,6 @@ def confirmation():
 
 
 
-
 # User registration route
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -376,6 +375,8 @@ def user_dashboard():
         return render_template('dashboard.html', user=user_data)
     else:
         return redirect(url_for('login'))  # Redirect to login if not logged in
+
+
 
 
 

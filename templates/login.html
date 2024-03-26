@@ -62,7 +62,9 @@
 <body>
 
 
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">CapTure</a>
@@ -74,82 +76,65 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/">Home</a>
           </li>
+          
           <li class="nav-item">
             <a class="nav-link active" href="/cart">Cart</a>
           </li>
+          
         </ul>
       </div>
     </div>
   </nav>
+              
+              
+            </ul>
+          </div>
+        </div>
+      </nav>
 
 
-  <center>
-    <h1>User Login</h1>
-  </center>
-  <br><br>
+      <center> <h1>User Login</h1></center>
+      <br><br>
+    <form id="loginForm" action="/login" method="POST" onsubmit="return validateForm()">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+        <input type="submit" value="Login">
+    </form>
 
-  <form id="loginForm" action="/login" method="POST" onsubmit="return validateForm()">
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required><br>
-    <span id="emailError" class="error-message"></span><br>
+    <!-- Login Error Popup -->
+    <div id="loginError" style="display: none;">
+        <p class="error-message">Error: Invalid credentials. Please check your email and password.</p>
+    </div>
 
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required><br>
-    <span id="passwordError" class="error-message"></span><br>
+    <!-- Unregistered User Popup -->
+    <div id="unregisteredUser" style="display: none;">
+        <p class="error-message">Error: You are not registered. Please register first.</p>
+    </div>
 
-    <input type="submit" value="Login">
-  </form>
+    <script>
+        function validateForm() {
+            // Add your custom validation logic here
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
 
-  <div id="loginError" style="display: none;">
-    <p class="error-message">Error: Invalid credentials. Please check your email and password.</p>
-  </div>
+            if (email.trim() === '' || password.trim() === '') {
+                document.getElementById("loginError").style.display = "block";
+                return false;
+            }
+            return true;
+        }
 
-  <div id="unregisteredUser" style="display: none;">
-    <p class="error-message">Error: You are not registered. Please register first.</p>
-  </div>
-
-  <script>
-
-function validateForm() {
-  var email = document.getElementById("email").value;
-  var password = document.getElementById("password").value;
-
-  // Clear any previous error messages
-  document.getElementById("emailError").innerHTML = "";
-  document.getElementById("passwordError").innerHTML = "";
-
-  // Email validation
-  if (!validateEmail(email)) {
-    document.getElementById("emailError").innerHTML = "Please enter a valid email address.";
-    return false;
-  }
-
-  // Password validation
-  if (password.length < 8) {
-    document.getElementById("passwordError").innerHTML = "Password must be at least 8 characters long.";
-    return false;
-  }
-
-  return true;
-}
-
-// Function to validate email format
-function validateEmail(email) {
-  var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-}
-
-// Check for login errors or unregistered users on page load
-window.onload = function () {
-  var queryString = window.location.search;
-  if (queryString.includes('error=invalid_credentials')) {
-    document.getElementById("loginError").style.display = "block";
-  } else if (queryString.includes('error=unregistered_user')) {
-    document.getElementById("unregisteredUser").style.display = "block";
-  }
-};
-
-</script>
+        // Check for login errors or unregistered users on page load
+        window.onload = function () {
+            var queryString = window.location.search;
+            if (queryString.includes('error=invalid_credentials')) {
+                document.getElementById("loginError").style.display = "block";
+            } else if (queryString.includes('error=unregistered_user')) {
+                document.getElementById("unregisteredUser").style.display = "block";
+            }
+        };
+    </script>
 </body>
 </html>
-
