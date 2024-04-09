@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <title>Capture - Dashboard</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Capture - User Dashboard</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">  </head>
-<body>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">CapTure</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" 
-      data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" 
-      aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
@@ -22,37 +20,16 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/">Home</a>
           </li>
+          
          
-          <li class="nav-item">
-            <a class="nav-link active" href="/logout">Logout</a>
-        </li>
           
         </ul>
       </div>
     </div>
   </nav>
-
-
-
-  <header>
-    <center><h1>Welcome to Your Dashboard, <span class="highlighted">{{ session['username'] }}</span></h1></center>
-  <br>
-  <br>
-  </header>
-  <main>
-   
-    <h2>Your Bookings:</h2>
-    <ul>
-      {% if booked_items %}
-          {% for item in booked_items %}
-              <li>{{ item }}</li>
-          {% endfor %}
-      {% else %}
-        <li>No booked products yet.</li>
-      {% endif %}
-    </ul>
-    
-    </main>
-
+<br>
+<br>
+  <center><h1>Welcome to Your Dashboard</h1></center>
+  <center><p>This is where you can see your profile information, order history, or other user-specific content.</p></center>
 </body>
 </html>
